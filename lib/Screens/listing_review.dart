@@ -4,6 +4,7 @@ import 'package:frontend/Screens/listing_amenities.dart';
 import 'package:frontend/Screens/listing_location.dart';
 import 'package:frontend/Screens/listing_pricing.dart';
 import 'package:frontend/Screens/listing_property.dart';
+import 'package:frontend/Screens/listing_title.dart';
 import 'package:frontend/utils/listing_provider.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
@@ -68,17 +69,62 @@ class ReviewScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           (listingData.photos != null)
-              ? AssetThumb(
-                  asset: listingData.photos[0],
-                  width: 300,
-                  height: 200,
+              ? Container(
+                  height: height * 0.3,
+                  width: width * 0.9,
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: listingData.photos.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => Card(
+                      // color: Color(0xFF00ad7c),
+                      color: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            // border: Border.all(),
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: EdgeInsets.all(4),
+                        height: height * 0.3,
+                        width: width * 0.9,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: AssetThumb(
+                            asset: listingData.photos[index],
+                            width: 300,
+                            height: 200,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 )
               : SizedBox(),
+          Divider(),
           ListTile(
-            title: Text('Property type'),
-            subtitle: Text(listingData.propertyType),
+            title: Text(
+              'Property type',
+              style: TextStyle(
+                // color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              listingData.propertyType,
+              style: TextStyle(
+                height: 3,
+                // color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             trailing: FlatButton(
               child: Text('edit'),
               textColor: Colors.blue,
@@ -86,9 +132,23 @@ class ReviewScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed(PropertyScreen.routeName),
             ),
           ),
+          Divider(),
           ListTile(
-            title: Text('Location'),
-            subtitle: Text(listingData.location),
+            title: Text('Location',
+                style: TextStyle(
+                  // color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                )),
+            subtitle: Text(
+              listingData.location,
+              style: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             trailing: FlatButton(
               child: Text('edit'),
               textColor: Colors.blue,
@@ -96,8 +156,15 @@ class ReviewScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed(LocationScreen.routeName),
             ),
           ),
+          Divider(),
           ListTile(
-            title: Text('Amenities'),
+            title: Text('Amenities',
+                style: TextStyle(
+                  // color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                )),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: buildAmenityList(listingData),
@@ -109,14 +176,46 @@ class ReviewScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed(AmenitiesScreen.routeName),
             ),
           ),
+          Divider(),
           ListTile(
-            title: Text('Title'),
-            subtitle: Text(listingData.title),
+            title: Text(
+              'Title',
+              style: TextStyle(
+                // color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              listingData.title,
+              style: TextStyle(
+                height: 3,
+                // color: Colors.white,
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),trailing: FlatButton(
+              child: Text('edit'),
+              textColor: Colors.blue,
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(TitleScreen.routeName),
+            ),
           ),
+          Divider(),
           Padding(
             padding: const EdgeInsets.only(bottom: 60),
             child: ListTile(
-              title: Text('Pricing'),
+              title: Text(
+                'Pricing',
+                style: TextStyle(
+                  // color: Colors.white,
+                  fontFamily: 'OpenSans',
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               trailing: FlatButton(
                 child: Text('edit'),
                 textColor: Colors.blue,
@@ -126,15 +225,35 @@ class ReviewScreen extends StatelessWidget {
               subtitle: Column(
                 children: List.generate(
                     3,
-                    (index) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                                '${List.from(listingData.pricing.keys)[index].toString()} '),
-                            Text(List.from(listingData.pricing.values)[index]
-                                .toString()),
-                          ],
-                        )),
+                    (index) => Container(
+                      margin: EdgeInsets.only(top:8),
+                      child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                '${List.from(listingData.pricing.keys)[index].toString()} ',
+                                style: TextStyle(
+                                  // color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 18,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '₹ ' +
+                                    List.from(listingData.pricing.values)[index]
+                                        .toString(),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  // color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 18,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                    )),
               ),
             ),
           ),
@@ -145,8 +264,21 @@ class ReviewScreen extends StatelessWidget {
 
   List<Widget> buildAmenityList(ListingProvider data) {
     List<Widget> amenities = [SizedBox()];
+    amenities.add(SizedBox(
+      height: 15,
+    ));
     data.amenities.forEach((e) {
-      amenities.add(Text(e));
+      amenities.add(
+        Text(
+          e,
+          style: TextStyle(
+            // color: Colors.white,
+            fontFamily: 'OpenSans',
+            fontSize: 18,
+            // fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
     });
     return amenities;
   }

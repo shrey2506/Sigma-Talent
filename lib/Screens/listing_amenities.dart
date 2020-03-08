@@ -62,25 +62,29 @@ class AmenitiesScreen extends StatelessWidget {
                     listingData: listingData,
                     height: height,
                     width: width,
-                    amenityName: 'amenity 1',
+                    amenityName: 'Air Conditioner',
+                    imageLoc: 'Assets/Icons/air-conditioner.png',
                   ),
                   AmenityBox(
                     listingData: listingData,
                     height: height,
                     width: width,
-                    amenityName: 'amenity 2',
+                    amenityName: 'Refrigerator',
+                    imageLoc: 'Assets/Icons/refrigerator.png',
                   ),
                   AmenityBox(
                     listingData: listingData,
                     height: height,
                     width: width,
-                    amenityName: 'amenity 3',
+                    amenityName: 'Warm Water',
+                    imageLoc: 'Assets/Icons/tap.png',
                   ),
                   AmenityBox(
                     listingData: listingData,
                     height: height,
                     width: width,
-                    amenityName: 'amenity 4',
+                    amenityName: 'Wi-fi',
+                    imageLoc: 'Assets/Icons/wifi-signal.png',
                   ),
                 ],
               ),
@@ -99,12 +103,14 @@ class AmenityBox extends StatelessWidget {
     @required this.height,
     @required this.width,
     @required this.amenityName,
+    @required this.imageLoc,
   }) : super(key: key);
 
   final ListingProvider listingData;
   final String amenityName;
   final double height;
   final double width;
+  final String imageLoc;
 
   @override
   Widget build(BuildContext context) {
@@ -115,16 +121,32 @@ class AmenityBox extends StatelessWidget {
         else
           listingData.addAmenitiesField([amenityName]);
       },
-      child: Container(
-        child: Text(amenityName),
-        margin: EdgeInsets.all(8),
-        height: height * 0.2,
-        width: width * 0.4,
-        decoration: BoxDecoration(
-            border: Border.all(
-                color: (listingData.amenities ?? []).contains(amenityName)
-                    ? Color(0xFF00ad7c)
-                    : Colors.grey)),
+      child: Card(
+        child: Container(
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: <Widget>[
+              Transform.scale(
+                  scale: 0.5,
+                  child: Image.asset(
+                    imageLoc,
+                    fit: BoxFit.contain,
+                  )),
+              Text(
+                amenityName,
+                style: TextStyle(fontSize: 22),
+              ),
+            ],
+          ),
+          margin: EdgeInsets.all(8),
+          height: height * 0.2,
+          width: width * 0.4,
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: (listingData.amenities ?? []).contains(amenityName)
+                      ? Color(0xFF00ad7c)
+                      : Colors.grey)),
+        ),
       ),
     );
   }
